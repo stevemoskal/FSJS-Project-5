@@ -6,6 +6,8 @@ FSJS Project 5 - Public API Requests
 const gallery = document.getElementById('gallery');
 const body = document.querySelector('body');
 const cards = document.getElementsByClassName('card');
+const search = document.querySelector('.search-container');
+
 
 // fetch method to obtain 12 random users from randomuser.me API
 
@@ -14,12 +16,14 @@ fetch('https://randomuser.me/api/?results=12&nat=ca,us')
   .then(data => {
     const userList = data.results;
     createCards(userList);
-    console.log(userList);
+    createSearch(userList);
+    // console.log(userList);
   });
 
 // function to create cards from random users and display them to the page
 
 function createCards(data) {
+  console.log(data);
    gallery.innerHTML = '';
    let randomUsers = '';
    for (let i = 0; i < data.length; i++) {
@@ -48,8 +52,9 @@ function createCards(data) {
 
 function createModal(list, index) {
   const phone = formatPhone(list[index].phone);
+  const birthday = formatBday(list[index].dob.date);
   const address = list[index].location;
-  let userModal = `
+  const userModal = `
     <div class="modal-container">
       <div class="modal">
         <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
@@ -61,7 +66,7 @@ function createModal(list, index) {
             <hr>
             <p class="modal-text">${phone}</p>
             <p class="modal-text">${address.street.number} ${address.street.name}, ${address.city}, ${address.state} ${address.postcode}</p>
-            <p class="modal-text">Birthday: 10/21/2015</p>
+            <p class="modal-text">Birthday: ${birthday}</p>
         </div>
     </div>
     <div class="modal-btn-container">
@@ -82,7 +87,7 @@ function createModal(list, index) {
     }
   });
   modalBtns[2].addEventListener('click', (e) => {
-    if (index < 11) {
+    if (index < list.length) {
       body.removeChild(body.lastElementChild);
       index++;
       createModal(list, index);
@@ -90,7 +95,44 @@ function createModal(list, index) {
   });
 }
 
+// function to format the phone number to (***) ***-****
+
 function formatPhone(phone) {
   let phoneNumber = phone.replace(/[^\d]/g, "");
   return phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
+}
+
+// function to format birthday to MM/DD/YYYY
+
+function formatBday(dob) {
+  let birthday = dob.replace(/[^\d]/g, "");
+  return birthday.replace(/(\d{4})(\d{2})(\d{2})(\d{9})/, "$2\/$3\/$1");
+}
+
+// function to add search bar to filter user list based on search input
+
+function createSearch(list) {
+  search.innerHTML = '';
+  const searchBar = `
+    <form action="#" method="get">
+        <input type="search" id="search-input" class="search-input" placeholder="Search...">
+        <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
+    </form>
+    `;
+  search.insertAdjacentHTML('beforeend', searchBar);
+  const searchInput = document.getElementById('search-input');
+  searchInput.addEventListener('keyup', (e) => {
+    let matchedNames = [];
+    if (searchInput.value.length != 0) {
+      for (let i = 0; i < list.length; i++) {
+          if (list[i].name.first.toLowerCase().includes(searchInput.value.toLowerCase()) ||
+            list[i].name.last.toLowerCase().includes(searchInput.value.toLowerCase())) {
+              matchedNames.push(list[i]);
+        }
+      }
+      createCards(matchedNames);
+    } else {
+      createCards(list);
+    }
+  });
 }
