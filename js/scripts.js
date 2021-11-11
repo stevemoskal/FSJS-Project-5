@@ -14,6 +14,7 @@ fetch('https://randomuser.me/api/?results=12&nat=ca,us')
   .then(data => {
     const userList = data.results;
     createCards(userList);
+    // console.log(userList);
   });
 
 // function to create cards from random users and display them to the page
@@ -46,6 +47,7 @@ function createCards(data) {
 // function to create a modal based on the selected user
 
 function createModal(list, index) {
+  const phone = formatPhone(list[index].phone);
   let userModal = `
     <div class="modal-container">
       <div class="modal">
@@ -56,7 +58,7 @@ function createModal(list, index) {
             <p class="modal-text">${list[index].email}</p>
             <p class="modal-text cap">${list[index].location.city}</p>
             <hr>
-            <p class="modal-text">(555) 555-5555</p>
+            <p class="modal-text">${phone}</p>
             <p class="modal-text">123 Portland Ave., Portland, OR 97204</p>
             <p class="modal-text">Birthday: 10/21/2015</p>
         </div>
@@ -66,4 +68,9 @@ function createModal(list, index) {
         <button type="button" id="modal-next" class="modal-next btn">Next</button>
     </div>`;
   body.insertAdjacentHTML('beforeend', userModal);
+}
+
+function formatPhone(phone) {
+  let phoneNumber = phone.replace(/[^\d]/g, "");
+  return phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
 }
