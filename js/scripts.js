@@ -14,7 +14,7 @@ fetch('https://randomuser.me/api/?results=12&nat=ca,us')
   .then(data => {
     const userList = data.results;
     createCards(userList);
-    // console.log(userList);
+    console.log(userList);
   });
 
 // function to create cards from random users and display them to the page
@@ -48,6 +48,7 @@ function createCards(data) {
 
 function createModal(list, index) {
   const phone = formatPhone(list[index].phone);
+  const address = list[index].location;
   let userModal = `
     <div class="modal-container">
       <div class="modal">
@@ -59,7 +60,7 @@ function createModal(list, index) {
             <p class="modal-text cap">${list[index].location.city}</p>
             <hr>
             <p class="modal-text">${phone}</p>
-            <p class="modal-text">123 Portland Ave., Portland, OR 97204</p>
+            <p class="modal-text">${address.street.number} ${address.street.name}, ${address.city}, ${address.state} ${address.postcode}</p>
             <p class="modal-text">Birthday: 10/21/2015</p>
         </div>
     </div>
@@ -68,6 +69,25 @@ function createModal(list, index) {
         <button type="button" id="modal-next" class="modal-next btn">Next</button>
     </div>`;
   body.insertAdjacentHTML('beforeend', userModal);
+
+  const modalBtns = body.querySelectorAll('button');
+  modalBtns[0].addEventListener('click', (e) => {
+    body.removeChild(body.lastElementChild);
+  });
+  modalBtns[1].addEventListener('click', (e) => {
+    if (index > 0) {
+      body.removeChild(body.lastElementChild);
+      index = index - 1;
+      createModal(list, index);
+    }
+  });
+  modalBtns[2].addEventListener('click', (e) => {
+    if (index < 11) {
+      body.removeChild(body.lastElementChild);
+      index++;
+      createModal(list, index);
+    }
+  });
 }
 
 function formatPhone(phone) {
