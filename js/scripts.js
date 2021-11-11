@@ -7,6 +7,7 @@ const gallery = document.getElementById('gallery');
 const body = document.querySelector('body');
 const cards = document.getElementsByClassName('card');
 
+// fetch method to obtain 12 random users from randomuser.me API
 
 fetch('https://randomuser.me/api/?results=12&nat=ca,us')
   .then(response => response.json())
@@ -15,6 +16,7 @@ fetch('https://randomuser.me/api/?results=12&nat=ca,us')
     createCards(userList);
   });
 
+// function to create cards from random users and display them to the page
 
 function createCards(data) {
    gallery.innerHTML = '';
@@ -40,6 +42,8 @@ function createCards(data) {
       })
     }
 }
+
+// function to create a modal based on the selected user
 
 function createModal(list, index) {
   let userModal = `
