@@ -129,7 +129,11 @@ function createSearch(list) {
               matchedNames.push(list[i]);
         }
       }
+      if (matchedNames.length === 0) {
+          gallery.innerHTML = `<p class="card-name">There are no employees that match your search criteria..</p>`;
+      } else {
       createCards(matchedNames);
+    }
     } else {
       createCards(list);
     }
