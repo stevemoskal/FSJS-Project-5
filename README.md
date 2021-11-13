@@ -21,7 +21,7 @@
  Previous employee and next employee buttons have been added in the modal window, where you can switch between the randomly generated employees.
 
  Style Changes -
- There are a few subtle style changes made to the program. I have updated the colour scheme, changing the background colour, background color of the employee cards, as well as the border colour of the cards. I have also changed the font, but only on the names displayed on the cards. All changes made in the CSS has been commented.
+ There are a few subtle style changes made to the program. I have updated the colour scheme, changing the background colour, background color of the employee cards, as well as the border colour of the cards. I have also changed the font, but only on the names displayed on the cards. All changes made in the CSS have been commented.
 
 #### Outside Resources
 
