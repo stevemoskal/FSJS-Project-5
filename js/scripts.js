@@ -17,13 +17,11 @@ fetch('https://randomuser.me/api/?results=12&nat=ca,us')
     const userList = data.results;
     createCards(userList);
     createSearch(userList);
-    // console.log(userList);
   });
 
 // function to create cards from random users and display them to the page
 
 function createCards(data) {
-  console.log(data);
    gallery.innerHTML = '';
    let randomUsers = '';
    for (let i = 0; i < data.length; i++) {
@@ -87,7 +85,8 @@ function createModal(list, index) {
     }
   });
   modalBtns[2].addEventListener('click', (e) => {
-    if (index < list.length) {
+    const endIndex = list.length - 1;
+    if (index < endIndex) {
       body.removeChild(body.lastElementChild);
       index++;
       createModal(list, index);
@@ -121,7 +120,7 @@ function createSearch(list) {
     `;
   search.insertAdjacentHTML('beforeend', searchBar);
   const searchInput = document.getElementById('search-input');
-  searchInput.addEventListener('keyup', (e) => {
+  searchInput.addEventListener('input', (e) => {
     let matchedNames = [];
     if (searchInput.value.length != 0) {
       for (let i = 0; i < list.length; i++) {
